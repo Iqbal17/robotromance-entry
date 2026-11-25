@@ -83,11 +83,20 @@ def entry_path() -> str:
     return os.path.join(out_dir, "entry.txt")
 
 
+def verify_written(path: str) -> None:
+    """Read entry.txt back and fail unless it is exactly LINE + newline."""
+    with open(path, "r", encoding="utf-8") as f:
+        content = f.read()
+    if content != LINE + "\n":
+        raise ValueError("entry.txt content does not match LINE exactly")
+
+
 def main() -> None:
     check_gate(LINE)
     path = entry_path()
     with open(path, "w", encoding="utf-8") as f:
         f.write(LINE + "\n")
+    verify_written(path)
 
 
 if __name__ == "__main__":
